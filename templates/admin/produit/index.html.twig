@@ -20,8 +20,12 @@
         {% for produit in produits %}
             <tr>
                 <td>{{ produit.id }}</td>
-                <td>{{ produit.image }}</td>
-                <td>{{ produit.nom }}</td>
+                <td>
+                    {% if produit.filename %}
+                        <img src="/images/products/{{ produit.filename }}" alt="" style="width: 100px; height: 100px">
+                    {% endif %}
+                </td>
+                <td>{{ produit.nom }} - Catégorie : {{ produit.categorie.nom }}</td>
                 <td>{{ produit.quantite }}</td>
                 <td>{{ produit.prix }}</td>
                 <td>

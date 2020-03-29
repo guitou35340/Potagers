@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Produit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
+use phpDocumentor\Reflection\Types\This;
 
 /**
  * @method Produit|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,22 +21,23 @@ class ProduitRepository extends ServiceEntityRepository
         parent::__construct($registry, Produit::class);
     }
 
-    // /**
-    //  * @return Produit[] Returns an array of Produit objects
-    //  */
-    /*
-    public function findByExampleField($value)
+        /**
+      * @return Produit[]
+      */
+    public function findAllVisible()
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
+        return $this->findAllVisible()
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+    public function findVisibleQuery(): QueryBuilder
+    {
+    return $this->createQueryBuilder('p')
+        ->where('p.prix = false');
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Produit

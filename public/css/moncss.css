@@ -5,6 +5,13 @@ body{
      background-size: cover;
      background-attachment: fixed;
 }
+.container-top{
+   margin-top : 60px;
+}
+
+.card.border-primary{
+    margin: 5px;
+}
 @media only screen and (max-width:800px) {
 body{
     background-image: url("../images/bg_2.jpg");

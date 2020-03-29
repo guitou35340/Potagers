@@ -1,0 +1,17 @@
+<div class="card border-primary" style="max-width: 18rem; ">
+    <div class="card-header text-center">
+        <b>   {{ produit.nom }} </b>
+    </div>
+    {% if produit.filename %}
+        <img src="/images/products/{{ produit.filename }}" alt="image de {{ produit.nom }}" style="width: 286px;height: 218px " >
+    {% endif %}
+    <div class="card-body">
+        <h5 class="card-title">{{produit.prix}} €/kg</h5>
+
+        <p class="card-text"></p>
+        <a href="{{ path('cart_add',{'id':produit.id}) }}" class="btn btn-success float-right">
+            <i class="fas fa-shopping-cart mr-1"></i>
+            Ajouter
+        </a>
+    </div>
+</div>

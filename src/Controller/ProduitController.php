@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Categorie;
 use App\Entity\Produit;
 use App\Form\ProduitType;
+use App\Repository\CategorieRepository;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,23 +20,29 @@ class ProduitController extends AbstractController
     /**
      * @Route("/", name="produit_index", methods={"GET"})
      */
-    public function index(ProduitRepository $produitRepository): Response
+    public function index(ProduitRepository $produitRepository, CategorieRepository $categorieRepository): Response
     {
-        return $this->render('produit/index.html.twig', [
-            'produits' => $produitRepository->findAll(),
+        $produits = $produitRepository->findAllVisible();
+        foreach ($produits as $produit) {
+            $produit->setCategorie($categorieRepository->findOneBySomeField($produit->getCategorie()->getId()));
+        }
+
+        return $this->render('admin/produit/index.html.twig', [
+            'produits' => $produits,
         ]);
     }
 
     /**
      * @Route("/new", name="produit_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, CategorieRepository $categorieRepository): Response
     {
         $produit = new Produit();
         $form = $this->createForm(ProduitType::class, $produit);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($produit);
             $entityManager->flush();
@@ -42,7 +50,7 @@ class ProduitController extends AbstractController
             return $this->redirectToRoute('produit_index');
         }
 
-        return $this->render('produit/new.html.twig', [
+        return $this->render('admin/produit/new.html.twig', [
             'produit' => $produit,
             'form' => $form->createView(),
         ]);
@@ -53,7 +61,7 @@ class ProduitController extends AbstractController
      */
     public function show(Produit $produit): Response
     {
-        return $this->render('produit/show.html.twig', [
+        return $this->render('admin/produit/show.html.twig', [
             'produit' => $produit,
         ]);
     }
@@ -72,7 +80,7 @@ class ProduitController extends AbstractController
             return $this->redirectToRoute('produit_index');
         }
 
-        return $this->render('produit/edit.html.twig', [
+        return $this->render('admin/produit/edit.html.twig', [
             'produit' => $produit,
             'form' => $form->createView(),
         ]);

@@ -22,7 +22,8 @@ class ProduitType extends AbstractType
             ->add('quantite')
             ->add('prix')
             ->add('categorie', EntityType::class,[
-                'class'=>Categorie::class
+                'class'=>Categorie::class,
+                'choice_label'=>'nom'
             ])
         ;
     }
