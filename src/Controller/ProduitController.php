@@ -7,6 +7,7 @@ use App\Entity\Produit;
 use App\Form\ProduitType;
 use App\Repository\CategorieRepository;
 use App\Repository\ProduitRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,14 +18,36 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ProduitController extends AbstractController
 {
+    protected $produitRepository;
+    protected $categorieRepository;
+
+    public function __construct(ProduitRepository $produitRepository, CategorieRepository $categorieRepository)
+    {
+        $this->produitRepository= $produitRepository;
+        $this->categorieRepository= $produitRepository;
+    }
+
     /**
      * @Route("/", name="produit_index", methods={"GET"})
      */
-    public function index(ProduitRepository $produitRepository, CategorieRepository $categorieRepository): Response
+    public function index(PaginatorInterface $paginator, Request $request): Response
     {
-        $produits = $produitRepository->findAllVisible();
+
+        // créer une entité qui représenter notre recherche
+
+        //créer un formulaire
+
+        //Gérer le traitement dans le controller
+
+
+        $produits = $paginator->paginate(
+            $this->produitRepository->findAllVisibleQuery(),
+            $request->query->getInt('page',1),
+            12
+        );
+
         foreach ($produits as $produit) {
-            $produit->setCategorie($categorieRepository->findOneBySomeField($produit->getCategorie()->getId()));
+            $produit->setCategorie($this->categorieRepository->findOneBySomeField($produit->getCategorie()->getId()));
         }
 
         return $this->render('admin/produit/index.html.twig', [

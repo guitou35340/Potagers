@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Produit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use phpDocumentor\Reflection\Types\This;
 
@@ -22,14 +23,12 @@ class ProduitRepository extends ServiceEntityRepository
     }
 
         /**
-      * @return Produit[]
+      * @return Query
       */
-    public function findAllVisible()
+    public function findAllVisibleQuery(): Query
     {
         return $this->findAllVisible()
-            ->getQuery()
-            ->getResult()
-        ;
+            ->getQuery();
     }
 
     public function findVisibleQuery(): QueryBuilder
