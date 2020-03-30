@@ -24,30 +24,19 @@ class ProduitController extends AbstractController
     public function __construct(ProduitRepository $produitRepository, CategorieRepository $categorieRepository)
     {
         $this->produitRepository= $produitRepository;
-        $this->categorieRepository= $produitRepository;
+        $this->categorieRepository= $categorieRepository;
     }
 
     /**
      * @Route("/", name="produit_index", methods={"GET"})
      */
-    public function index(PaginatorInterface $paginator, Request $request): Response
+    public function index(): Response
     {
 
-        // créer une entité qui représenter notre recherche
-
-        //créer un formulaire
-
-        //Gérer le traitement dans le controller
-
-
-        $produits = $paginator->paginate(
-            $this->produitRepository->findAllVisibleQuery(),
-            $request->query->getInt('page',1),
-            12
-        );
+        $produits =$this->produitRepository->findAll();
 
         foreach ($produits as $produit) {
-            $produit->setCategorie($this->categorieRepository->findOneBySomeField($produit->getCategorie()->getId()));
+           $produit->setCategorie($this->categorieRepository->findOneBySomeField($produit->getCategorie()->getId()));
         }
 
         return $this->render('admin/produit/index.html.twig', [
@@ -58,7 +47,7 @@ class ProduitController extends AbstractController
     /**
      * @Route("/new", name="produit_new", methods={"GET","POST"})
      */
-    public function new(Request $request, CategorieRepository $categorieRepository): Response
+    public function new(Request $request): Response
     {
         $produit = new Produit();
         $form = $this->createForm(ProduitType::class, $produit);

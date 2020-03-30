@@ -2,12 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Categorie;
 use App\Entity\Produit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use phpDocumentor\Reflection\Types\This;
+
 
 /**
  * @method Produit|null find($id, $lockMode = null, $lockVersion = null)
@@ -27,14 +28,14 @@ class ProduitRepository extends ServiceEntityRepository
       */
     public function findAllVisibleQuery(): Query
     {
-        return $this->findAllVisible()
+        return $this->findVisibleQuery()
             ->getQuery();
     }
 
     public function findVisibleQuery(): QueryBuilder
     {
-    return $this->createQueryBuilder('p')
-        ->where('p.prix = false');
+    return $this->createQueryBuilder('p');
+
     }
 
 
@@ -49,4 +50,12 @@ class ProduitRepository extends ServiceEntityRepository
         ;
     }
     */
+/*
+    public function findAllField()
+    {
+        return $his->
+
+            ;
+    }
+*/
 }
