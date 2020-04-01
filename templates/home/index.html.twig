@@ -3,6 +3,22 @@
 {% block title %}Le potager de la devise{% endblock %}
 
 {% block body %}
+<div class="jumbotron">
+    <div class="container">
+            {{ form_start(form) }}
+            <div class="form-row float-right">
+                <div class="col ">
+                    {{ form_row(form.nom) }}
+                </div>
+                <div class="col ">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+    </div>
+</div>
 
     <div class="container container-top">
             <h1>Liste des produits</h1>
@@ -16,18 +32,33 @@
                 <img src="/images/products/{{ produit.filename }}" alt="image de {{ produit.nom }}" style="width: 286px;height: 218px " >
             {% endif %}
             <div class="card-body">
-                <h5 class="card-title">{{produit.prix}} €/kg</h5>
+                <h5 class="card-title">
+                    {{produit.prix}} € {{produit.unite}}
+                </h5>
+                <p class="card-text">
 
-                <p class="card-text"></p>
-                <a href="{{ path('cart_add',{'id':produit.id}) }}" class="btn btn-success float-right">
-                    <i class="fas fa-shopping-cart mr-1"></i>
-                    Ajouter
-                </a>
+                <form action="{{ path('cart_add',{'id': produit.id}) }}" method="get">
+                    <select name="qte" class="form-control">
+                        {% for i in 1..10 %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <div class="md-12">
+                    <button type="submit" class="btn btn-success md-5"> <i class="fas fa-shopping-cart mr-1"></i>Ajouter</button>
+                    <a href="{{ path('home_show',{'id':produit.id}) }}" class="btn btn-primary md-5">
+                        <i class="fas fa-shopping-cart mr-1"></i>
+                      détails
+                    </a>
+                    </div>
+                </form>
+
+                </p>
             </div>
         </div>
         {% endfor %}
     </div>
-        <div class="navigation">
+        <div class="navigation ">
             {{ knp_pagination_render(produits) }}
         </div>
     </div>

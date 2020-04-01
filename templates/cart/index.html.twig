@@ -25,12 +25,16 @@
     {% for item in items %}
     <tr>
         <td>{{ item.product.nom }} </td>
-        <td>{{ item.product.prix }} €/kg</td>
+        <td>{{ item.product.prix }} € {{ item.product.unite }}</td>
         <td>{{ item.quantity }}</td>
         <td>{{ item.quantity * item.product.prix }}</td>
         <td>
+
             <a href="{{ path('cart_remove', {'id': item.product.id}) }}" class="btn btn-danger btn-sm">
-                <i class="fas fa-trash"></i>
+                <i class="fas fa-minus"></i>
+            </a>
+            <a href="{{ path('cart_add', {'id': item.product.id}) }}" class="btn btn-danger btn-sm">
+                <i class="fas fa-plus"></i>
             </a>
         </td>
     </tr>
@@ -44,6 +48,7 @@
     </tr>
     </tfoot>
 </table>
+        <a href="#" class="btn btn-primary">Commander </a>
     {% else %}
         <p>Surprise, c'est vide !</p>
     {% endif %}

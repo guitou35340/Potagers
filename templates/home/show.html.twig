@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail du produit {{ produit.nom }}{% endblock %}
+
+{% block body %}
+
+
+    <div class="container container-top">
+        <div class="jumbotron">
+        <h1 class="text-center">Détail du produit</h1>
+
+
+        {% if produit %}
+        <div class="card mb-6 m-auto " style="max-width: 540px;">
+            <div class="row no-gutters">
+                <div class="col-md-8">
+                    {% if produit.filename %}
+                        <img src="/images/products/{{ produit.filename }}" alt="image de {{ produit.nom }}" class="card-img" >
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <div class="card-body">
+                        <h5 class="card-title"> {{ produit.nom }}</h5>
+                        <p class="card-text"> {{produit.prix}} € {{produit.unite}}</p>
+                        <hr>
+                        <p class="card-text">
+                        <form action="{{ path('cart_add',{'id': produit.id}) }}" method="get">
+                            <select name="qte" class="form-control">
+                                {% for i in 1..10 %}
+                                <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                            <br>
+                            <button type="submit" class="btn btn-primary"> <i class="fas fa-shopping-cart mr-1"></i>Ajouter</button>
+                        </form>
+                            <br>
+                                </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

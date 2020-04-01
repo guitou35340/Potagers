@@ -39,15 +39,6 @@ class Produit
      */
     private $nom;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $quantite;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $prix;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Categorie", inversedBy="produits")
@@ -58,6 +49,22 @@ class Produit
      * @ORM\Column(type="datetime")
      */
     private $updated_at;
+
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $quantite;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $prix;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $unite;
 
     public function getId(): ?int
     {
@@ -75,30 +82,24 @@ class Produit
 
         return $this;
     }
-
-    public function getQuantite(): ?string
-    {
-        return $this->quantite;
-    }
-
-    public function setQuantite(string $quantite): self
-    {
-        $this->quantite = $quantite;
-
-        return $this;
-    }
-
-    public function getPrix(): ?string
+    /**
+     * @return mixed
+     */
+    public function getPrix()
     {
         return $this->prix;
     }
 
-    public function setPrix(string $prix): self
+    /**
+     * @param mixed $prix
+     * @return Produit
+     */
+    public function setPrix($prix)
     {
         $this->prix = $prix;
-
         return $this;
     }
+
 
     public function getCategorie(): ?Categorie
     {
@@ -162,6 +163,34 @@ class Produit
 
         return $this;
     }
+
+
+    public function getQuantite(): ?int
+    {
+        return $this->quantite;
+    }
+
+    public function setQuantite(int $quantite): self
+    {
+        $this->quantite = $quantite;
+
+        return $this;
+    }
+
+    public function getUnite(): ?string
+    {
+        return $this->unite;
+    }
+
+    public function setUnite(string $unite): self
+    {
+        $this->unite = $unite;
+
+        return $this;
+    }
+
+
+
 
 
 

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Categorie;
 use App\Entity\Produit;
+use App\Entity\ProduitSearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
@@ -26,10 +27,15 @@ class ProduitRepository extends ServiceEntityRepository
         /**
       * @return Query
       */
-    public function findAllVisibleQuery(): Query
+    public function findAllVisibleQuery(ProduitSearch $search): Query
     {
-        return $this->findVisibleQuery()
-            ->getQuery();
+        $query= $this->findVisibleQuery();
+        if($search->getNom()){
+            $query=$query->where('p.nom LIKE :nom ')
+        ->setParameter('nom','%'.$search->getNom().'%');
+        }
+
+         return $query->getQuery();
     }
 
     public function findVisibleQuery(): QueryBuilder

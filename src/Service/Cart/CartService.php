@@ -18,11 +18,26 @@ class CartService {
     public function add(int $id){
         $panier=  $this->session->get('panier',[]);
 
-        if(!empty($panier[$id])){
+
+
+          if(!empty($panier[$id])){
             $panier[$id]++;
         }else{
             $panier[$id]=1;
         }
+
+        $this->session->set('panier', $panier);
+    }
+
+    public function add_bis(int $id, int $quantite){
+        $panier=  $this->session->get('panier',[]);
+
+        if(!empty($panier[$id])){
+            $panier[$id]+=$quantite;
+        }else{
+            $panier[$id]=$quantite;
+        }
+
         $this->session->set('panier', $panier);
     }
 
@@ -49,12 +64,16 @@ class CartService {
                 'quantity' => $quantity
             ];
         }
+
         return $panierWithData;
     }
 
     public function getTotal() : float {
+
         $total=0;
         foreach ($this->getFullCart() as $item){
+          //  $prix = floatval($item['product']->getPrix());
+
             $total += $item['product']->getPrix() * $item['quantity'];
         }
         return $total;

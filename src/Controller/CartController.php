@@ -17,9 +17,11 @@ class CartController extends AbstractController
      */
     public function index(CartService $cartService)
     {
+
       $panierWithData= $cartService->getFullCart();
 
         $total=$cartService->getTotal();
+
         return $this->render('cart/index.html.twig', [
             'items'=>$panierWithData,
             'total' => $total
@@ -29,9 +31,16 @@ class CartController extends AbstractController
     /**
      * @Route("/panier/add/{id}", name="cart_add")
      */
-    public function add($id, CartService $cartService){
+    public function add($id, CartService $cartService, Request $request){
 
-        $cartService->add($id);
+
+            $quantite=$request->query->get('qte');
+
+            if($quantite!=''){
+                $cartService->add_bis($id, $quantite);
+            }else{
+                $cartService->add($id);
+            }
         return $this->redirectToRoute("cart_index");
     }
 

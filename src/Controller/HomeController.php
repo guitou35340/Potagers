@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\ProduitSearch;
+use App\Form\ProduitSearchType;
 use App\Repository\CategorieRepository;
 use App\Repository\ProduitRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -20,6 +22,8 @@ class HomeController extends AbstractController
         $this->categorieRepository= $categorieRepository;
     }
 
+
+
     /**
      * @Route("/", name="home")
      */
@@ -27,12 +31,14 @@ class HomeController extends AbstractController
     {
 
         // créer une entité qui représenter notre recherche
-
+        $produitSearch = new ProduitSearch();
         //créer un formulaire
-
+        $form= $this->createForm(ProduitSearchType::class,$produitSearch);
+        $form->handleRequest($request);
         //Gérer le traitement dans le controller
 
-        $produits = $pagination->paginate($this->produitRepository->findAllVisibleQuery(),
+        $produits = $pagination->paginate(
+            $this->produitRepository->findAllVisibleQuery($produitSearch),
             $request->query->getInt('page',1),
             12
             );
@@ -41,9 +47,23 @@ class HomeController extends AbstractController
                 $produit->setCategorie($this->categorieRepository->findOneBySomeField($produit->getCategorie()->getId()));
             }
         }
-
         return $this->render('home/index.html.twig', [
             'produits' => $produits,
+            'form'=> $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/show/{id}" , name="home_show")
+     */
+    public function show($id){
+    $produit = $this->produitRepository->find($id);
+        if (!empty($produit->getCategorie())) {
+            $produit->setCategorie($this->categorieRepository->findOneBySomeField($produit->getCategorie()->getId()));
+        }
+
+    return $this->render('home/show.html.twig',[
+        'produit'=> $produit
+    ]);
     }
 }
