@@ -26,16 +26,18 @@
     <tr>
         <td>{{ item.product.nom }} </td>
         <td>{{ item.product.prix }} € {{ item.product.unite }}</td>
-        <td>{{ item.quantity }}</td>
-        <td>{{ item.quantity * item.product.prix }}</td>
-        <td>
-
-            <a href="{{ path('cart_remove', {'id': item.product.id}) }}" class="btn btn-danger btn-sm">
+        <td>{{ item.quantity }} <a href="{{ path('cart_remove', {'id': item.product.id}) }}" class="btn btn-primary btn-sm">
                 <i class="fas fa-minus"></i>
             </a>
-            <a href="{{ path('cart_add', {'id': item.product.id}) }}" class="btn btn-danger btn-sm">
+            <a href="{{ path('cart_add', {'id': item.product.id}) }}" class="btn btn-primary btn-sm">
                 <i class="fas fa-plus"></i>
+            </a></td>
+        <td>{{ item.quantity * item.product.prix }}</td>
+        <td>
+            <a href="{{ path('cart_unset', {'id': item.product.id}) }}" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash-alt"></i>
             </a>
+
         </td>
     </tr>
     {% endfor %}

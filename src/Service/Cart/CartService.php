@@ -53,6 +53,12 @@ class CartService {
         $this->session->set('panier',$panier);
     }
 
+    public function unset(int $id){
+        $panier = $this->session->get('panier',[]);
+            unset($panier[$id]);
+               $this->session->set('panier',$panier);
+    }
+
     public function getFullCart() : array {
         $panier=  $this->session->get('panier',[]);
 

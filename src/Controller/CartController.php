@@ -12,6 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
+
+
+
     /**
      * @Route("/panier", name="cart_index")
      */
@@ -52,4 +55,14 @@ class CartController extends AbstractController
     $cartService->remove($id);
     return $this->redirectToRoute("cart_index");
     }
+
+    /**
+     * @Route("/panier/unset/{id}", name="cart_unset")
+     */
+    public function unset($id, CartService $cartService){
+
+        $cartService->unset($id);
+        return $this->redirectToRoute("cart_index");
+    }
+
 }
